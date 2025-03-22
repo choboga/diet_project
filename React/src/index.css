@@ -1,0 +1,32 @@
+/* Tailwind CSS 기본 스타일 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NanumSquare 폰트 적용 */
+@import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+
+/* 기본 글꼴 설정 */
+body {
+  margin: 0;
+  font-family: 'NanumSquare', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f3f4f6;
+}
+
+/* 제목 스타일 개선 (그림자 추가) */
+h1 {
+  font-family: 'NanumSquare', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* 그림자 추가 */
+  color: #4B0082; /* 보라색 계열 */
+  margin-bottom: 20px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
