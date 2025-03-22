@@ -77,7 +77,7 @@ const Preference = () => {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/predict", {
+      const response = await axios.post("https://diet-backend-zdup.onrender.com/predict", {
         answers,
       });
       navigate("/result", { state: { diet: response.data.recommended_diet, answers } });
