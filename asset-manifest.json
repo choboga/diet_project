@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/diet_project/static/css/main.39c806ef.css",
-    "main.js": "/diet_project/static/js/main.3f39f9ed.js",
+    "main.css": "/diet_project/static/css/main.4282a4b3.css",
+    "main.js": "/diet_project/static/js/main.816f7c3e.js",
     "index.html": "/diet_project/index.html",
-    "main.39c806ef.css.map": "/diet_project/static/css/main.39c806ef.css.map",
-    "main.3f39f9ed.js.map": "/diet_project/static/js/main.3f39f9ed.js.map"
+    "main.4282a4b3.css.map": "/diet_project/static/css/main.4282a4b3.css.map",
+    "main.816f7c3e.js.map": "/diet_project/static/js/main.816f7c3e.js.map"
   },
   "entrypoints": [
-    "static/css/main.39c806ef.css",
-    "static/js/main.3f39f9ed.js"
+    "static/css/main.4282a4b3.css",
+    "static/js/main.816f7c3e.js"
   ]
 }
