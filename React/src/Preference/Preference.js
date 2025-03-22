@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { motion } from "framer-motion"; // 애니메이션을 위해 추가
+import { motion } from "framer-motion";
 
-// 설문 문항을 그룹화
+// 설문 문항 그룹
 export const questionGroups = {
   "식습관 관련": [
     "나는 하루 세 끼를 규칙적으로 먹는다.",
@@ -55,14 +55,23 @@ export const questionGroups = {
   ],
 };
 
-// questions 배열 생성 (questionGroups를 평탄화)
 export const questions = Object.values(questionGroups).flat();
-
 export const options = ["매우 그렇다", "그렇다", "보통이다", "아니다", "전혀 아니다"];
 
 const Preference = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [answers, setAnswers] = useState(Array(40).fill(null));
+
+  const {
+    bmi,
+    category,
+    birthYear,
+    gender,
+    height,
+    weight,
+    mbti = null,
+  } = location.state || {};
 
   const handleSelect = (index, value) => {
     const newAnswers = [...answers];
@@ -77,22 +86,37 @@ const Preference = () => {
     }
 
     try {
-      const response = await axios.post("https://diet-backend-zdup.onrender.com/predict", {
+      // 1. 사용자 데이터 저장
+      await axios.post("http://127.0.0.1:8000/save_data", {
         answers,
+        bmi,
+        category,
+        birthYear,
+        gender,
+        height,
+        weight,
+        mbti,
       });
-      navigate("/result", { state: { diet: response.data.recommended_diet, answers } });
+
+      // 2. 다이어트 추천 요청
+      const response = await axios.post(
+        "https://diet-backend-zdup.onrender.com/predict",
+        { answers }
+      );
+
+      navigate("/result", {
+        state: { diet: response.data.recommended_diet, answers },
+      });
     } catch (error) {
       console.error("Error:", error);
-      alert("예측 요청 중 오류가 발생했습니다.");
+      alert("서버 요청 중 오류가 발생했습니다.");
     }
   };
 
-  // 진행률 계산
   const totalQuestions = 40;
-  const answeredQuestions = answers.filter((answer) => answer !== null).length;
+  const answeredQuestions = answers.filter((a) => a !== null).length;
   const progressPercentage = (answeredQuestions / totalQuestions) * 100;
 
-  // 문항 인덱스 관리 (그룹화된 문항에 맞게 인덱스를 매핑)
   let globalIndex = 0;
 
   return (
@@ -102,12 +126,9 @@ const Preference = () => {
       </h2>
 
       <div className="w-full max-w-3xl bg-white p-4 sm:p-6 rounded-2xl shadow-xl mb-16 sm:mb-20">
-        {/* 문항 그룹화 */}
         {Object.keys(questionGroups).map((group, groupIndex) => (
           <div key={groupIndex} className="mb-8">
-            <h3 className="text-lg sm:text-xl font-bold text-blue-600 mb-4">
-              {group}
-            </h3>
+            <h3 className="text-lg sm:text-xl font-bold text-blue-600 mb-4">{group}</h3>
             <div className="space-y-4">
               {questionGroups[group].map((question, index) => {
                 const currentIndex = globalIndex++;
@@ -140,6 +161,7 @@ const Preference = () => {
             </div>
           </div>
         ))}
+
         <button
           className="w-full mt-6 sm:mt-8 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-800 transition-all duration-300"
           onClick={handleSubmit}
@@ -148,7 +170,7 @@ const Preference = () => {
         </button>
       </div>
 
-      {/* 진행률 바 (하단 고정, 반투명 회색 배경) */}
+      {/* 진행률 바 */}
       <motion.div
         className="fixed bottom-0 left-0 w-full bg-gray-200/80 backdrop-blur-sm shadow-md z-10 p-3"
         initial={{ opacity: 0, y: 20 }}
