@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom"; // 변경된 부분
 
 // Pages
 import Home from "./pages/Home";
@@ -21,8 +21,8 @@ const App = () => {
         <Route path="/bmiresult" element={<BMIResult />} />
         <Route path="/mbti" element={<MBTISelection />} />
         <Route path="/mbtiresult" element={<MBTIResult />} />
-        <Route path="/preference" element={<Preference />} /> {/* ✅ 설문 페이지 */}
-        <Route path="/result" element={<Result />} />         {/* ✅ 결과 페이지 */}
+        <Route path="/preference" element={<Preference />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </Router>
   );
